@@ -1,0 +1,38 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:17beta3
+    container_name: postgresprisma
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=testdb
+    networks:
+      - nestjs-network
+  # Create another container for "TEST"
+  test-postgres:
+    image: postgres:17beta3
+    container_name: test-postgres
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=testdb
+    networks:
+      - nestjs-network
+networks:
+  nestjs-network:
+    driver: bridge
+
+# Create container, network, ... from "docker composer" file:
+# -d: deamon/background mode
+# docker compose up -d
+# if you want to start only specified services/container:
+# docker compose up -d postgres -d
+# How to remove containers + volumes
+# docker compose rm postgres --stop --force --volumes
