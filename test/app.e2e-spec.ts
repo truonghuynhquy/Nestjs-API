@@ -91,7 +91,22 @@ describe('App EndToEnd tests', () => {
             email: 'testemail01@gmail.com',
             password: 'a123456',
           })
-          .expectStatus(201);
+          .expectStatus(201)
+          .stores('accessToken', 'accessToken');
+      });
+    });
+
+    describe('User', () => {
+      describe('Get Detail User', () => {
+        it('should Get Detail User', () => {
+          return pactum
+            .spec()
+            .get('/user/me')
+            .withHeaders({
+              Authorization: 'Bearer $S{accessToken}',
+            })
+            .expectStatus(200);
+        });
       });
     });
   });
